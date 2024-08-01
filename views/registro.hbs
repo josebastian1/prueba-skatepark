@@ -1,0 +1,75 @@
+<div class="py-4">
+  <h2>Registro</h2>
+  <hr class="w-50" />
+
+  <form id="formRegistro">
+    <div class="form-group row w-50 m-auto">
+      <div class="form-group col-12 col-sm-6">
+        <label>Email</label>
+        <input class="form-control m-auto" type="email" name="email" required />
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <label>Nombre</label>
+        <input class="form-control m-auto" type="text" name="nombre" required />
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <label>Password</label>
+        <input class="form-control m-auto" type="password" name="password" required/>
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <label>Repita la password</label>
+        <input class="form-control m-auto" type="password" name="replyPassword" required/>
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <label>Años de experiencia</label>
+        <input class="form-control m-auto" type="number" name="anos_experiencia" required min="0"/>
+      </div>
+      <div class="form-group col-12 col-sm-6">
+        <label>Especialidad</label>
+        <input class="form-control m-auto" type="text" name="especialidad" required/>
+      </div>
+      <div class="form-group col-12 col-sm-12">
+        <label>Foto de perfil</label>
+        <input type="file" name="imagen" required/>
+      </div>
+    </div>
+    <button class="btn btn-info mb-3">Registrarme</button>
+    <p><a href="/login"> Iniciar sesión</a></p>
+  </form>
+</div>
+
+<script>
+
+  const formRegistro = document.getElementById("formRegistro");
+
+  formRegistro.addEventListener("submit", async (event) => {
+    try{
+
+        event.preventDefault();
+
+      let formData = new FormData(formRegistro);
+
+      if(formData.get("password") != formData.get("replyPassword")){
+        return alert("Nos password no coinciden.");
+      }
+
+
+      let response = await fetch("/registro", {
+        method: "POST",
+        body: formData
+      });
+
+      let data = await response.json();
+
+      alert(data.message);
+
+      if(response.status == 201){
+        location.href = "/login"
+      }
+
+
+    }catch(error){
+      alert("Error en registro de usuario.");
+    }
+  })
+</script>

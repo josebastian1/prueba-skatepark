@@ -1,0 +1,46 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Skate Park</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link nav-link-home" href="/">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-admin" href="#">Administración</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-participants" href="#">Perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-login" href="/login">Iniciar Sesión</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-register" href="/registro">Registro</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem("token");
+        const adminLink = document.querySelector('.nav-link-admin');
+        const participantsLink = document.querySelector('.nav-link-participants');
+
+        // Verifica si el token está presente y no está vacío
+        if (token) {
+            adminLink.href = `/admin?token=${encodeURIComponent(token)}`;
+            participantsLink.href = `/participantes?token=${encodeURIComponent(token)}`;
+        } else {
+            adminLink.href = '/admin'; // Enlace sin token si no hay token en localStorage
+            participantsLink.href = '/participantes'; // Enlace sin token si no hay token en localStorage
+        }
+    });
+</script>

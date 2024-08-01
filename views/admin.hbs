@@ -1,0 +1,66 @@
+<div class="py-4" id='skatersList'>
+    <h2>Administración</h2>
+    <hr class="w-50" />
+
+    <table class="table w-50 m-auto">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Años de experiencia</th>
+                <th scope="col">Especialidad</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each skaters}}
+            <tr>
+                <th scope="row">{{@index}}</th>
+                <td>
+                    <img src="{{foto}}" alt="{{nombre}}" width="70">
+                </td>
+                <td>{{nombre}}</td>
+                <td>{{anos_experiencia}}</td>
+                <td>{{especialidad}}</td>
+                <td>
+                    <input type="checkbox" data-skater-id="{{id}}" {{#if estado}}checked{{/if}} />
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][data-skater-id]');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', async (event) => {
+            const skaterId = event.target.getAttribute('data-skater-id');
+            const estado = event.target.checked;
+
+            const formData = new FormData();
+            formData.append('id', skaterId);
+            formData.append('estado', estado);
+
+            try {
+                const response = await fetch(`/updateEstado`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert('Error al actualizar el estado: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error al actualizar el estado.');
+            }
+        });
+    });
+});
+</script>
